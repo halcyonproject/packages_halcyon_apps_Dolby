@@ -285,18 +285,15 @@ fun DolbyScreen(
 
             // Bass Enhancer
             SwitchPreference(
-                model = remember(bassEnhancerEnabled, dsOn, isOnSpeaker) {
+                model = remember(bassEnhancerEnabled, dsOn) {
                     object : SwitchPreferenceModel {
                         override val title = context.getString(R.string.dolby_bass_enhancer)
-                        override val summary = {
-                            if (isOnSpeaker) connectHeadphonesText
-                            else context.getString(R.string.dolby_bass_enhancer_summary)
-                        }
+                        override val summary = { context.getString(R.string.dolby_bass_enhancer_summary) }
                         override val icon = @Composable {
                             SettingsIcon(imageVector = Icons.AutoMirrored.Outlined.VolumeUp)
                         }
                         override val checked = { bassEnhancerEnabled }
-                        override val changeable = { dsOn && !isOnSpeaker }
+                        override val changeable = { dsOn }
                         override val onCheckedChange = { checked: Boolean ->
                             viewModel.setBassEnhancerEnabled(checked)
                         }

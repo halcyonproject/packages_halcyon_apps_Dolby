@@ -183,8 +183,7 @@ class DolbyController private constructor(private val context: Context) {
     }
 
     var ieqPreset: Int
-        get() = checkEffectAndRun { dolbyAudioEffect?.getDapParameterInt(DsParam.IEQ_PRESET, currentBaseProfileId) }
-            ?: preferenceStore.ieqPreset
+        get() = preferenceStore.ieqPreset
         set(value) {
             preferenceStore.ieqPreset = value
             checkEffectAndRun {
@@ -193,9 +192,7 @@ class DolbyController private constructor(private val context: Context) {
         }
 
     var dialogueEnhancerAmount: Int
-        get() = checkEffectAndRun {
-            dolbyAudioEffect?.getDapParameterInt(DsParam.DIALOGUE_ENHANCER_AMOUNT, currentBaseProfileId)
-        } ?: preferenceStore.dialogueEnhancerAmount
+        get() = preferenceStore.dialogueEnhancerAmount
         set(value) {
             preferenceStore.dialogueEnhancerAmount = value
             checkEffectAndRun {
@@ -205,9 +202,7 @@ class DolbyController private constructor(private val context: Context) {
         }
 
     var bassEnhancerEnabled: Boolean
-        get() = checkEffectAndRun {
-            dolbyAudioEffect?.getDapParameterBool(DsParam.BASS_ENHANCER_ENABLE, currentBaseProfileId)
-        } ?: preferenceStore.bassEnhancerEnabled
+        get() = preferenceStore.bassEnhancerEnabled
         set(value) {
             preferenceStore.bassEnhancerEnabled = value
             checkEffectAndRun {
@@ -216,9 +211,7 @@ class DolbyController private constructor(private val context: Context) {
         }
 
     var stereoWideningAmount: Int
-        get() = checkEffectAndRun {
-            dolbyAudioEffect?.getDapParameterInt(DsParam.STEREO_WIDENING_AMOUNT, currentBaseProfileId)
-        } ?: preferenceStore.stereoWideningAmount
+        get() = preferenceStore.stereoWideningAmount
         set(value) {
             preferenceStore.stereoWideningAmount = value
             checkEffectAndRun {
@@ -227,9 +220,7 @@ class DolbyController private constructor(private val context: Context) {
         }
 
     var volumeLevelerEnabled: Boolean
-        get() = checkEffectAndRun {
-            dolbyAudioEffect?.getDapParameterBool(DsParam.VOLUME_LEVELER_ENABLE, currentBaseProfileId)
-        } ?: preferenceStore.volumeLevelerEnabled
+        get() = preferenceStore.volumeLevelerEnabled
         set(value) {
             preferenceStore.volumeLevelerEnabled = value
             checkEffectAndRun {
@@ -238,9 +229,7 @@ class DolbyController private constructor(private val context: Context) {
         }
 
     var headphoneVirtEnabled: Boolean
-        get() = checkEffectAndRun {
-            dolbyAudioEffect?.getDapParameterBool(DsParam.HEADPHONE_VIRTUALIZER, currentBaseProfileId)
-        } ?: preferenceStore.headphoneVirtEnabled
+        get() = preferenceStore.headphoneVirtEnabled
         set(value) {
             preferenceStore.headphoneVirtEnabled = value
             checkEffectAndRun {
@@ -249,9 +238,7 @@ class DolbyController private constructor(private val context: Context) {
         }
 
     var speakerVirtEnabled: Boolean
-        get() = checkEffectAndRun {
-            dolbyAudioEffect?.getDapParameterBool(DsParam.SPEAKER_VIRTUALIZER, currentBaseProfileId)
-        } ?: preferenceStore.speakerVirtEnabled
+        get() = preferenceStore.speakerVirtEnabled
         set(value) {
             preferenceStore.speakerVirtEnabled = value
             checkEffectAndRun {
