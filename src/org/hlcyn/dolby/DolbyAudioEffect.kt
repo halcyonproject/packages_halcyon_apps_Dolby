@@ -26,8 +26,10 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         }
         set(value) {
             try {
+                if (value && (!hasControl() || !enabled)) {
+                    checkStatus(setEnabled(true))
+                }
                 setIntParam(EFFECT_PARAM_ENABLE, if (value) 1 else 0)
-                checkStatus(setEnabled(value))
             } catch (e: Exception) {
                 elog(TAG, "Error setting dsOn: ${e.message}", e)
             }

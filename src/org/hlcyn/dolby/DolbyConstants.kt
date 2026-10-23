@@ -27,7 +27,7 @@ class DolbyConstants {
 
     companion object {
         const val TAG = "XiaomiDolby"
-        val DEBUG = Log.isLoggable(TAG, Log.DEBUG)
+        val DEBUG = Log.isLoggable(TAG, Log.DEBUG) || android.os.Build.IS_DEBUGGABLE
 
         const val PREF_ENABLE = "dolby_enable"
         const val PREF_PROFILE = "dolby_profile"
