@@ -37,6 +37,17 @@ class DolbyController private constructor(private val context: Context) {
     val currentBaseProfileId: Int
         get() = profileRepository.getProfile(preferenceStore.profile)?.baseProfileId ?: preferenceStore.profile
 
+    private var wasPlaying = false
+    private val reinitRunnable = Runnable {
+        dlog(TAG, "Executing debounced effect reinitialization and state restore")
+        reinitEffectAndRestore()
+    }
+
+    private fun postReinitEffect() {
+        handler.removeCallbacks(reinitRunnable)
+        handler.postDelayed(reinitRunnable, 200)
+    }
+
     private val recordingCallback = object : AudioManager.AudioRecordingCallback() {
         override fun onRecordingConfigChanged(configs: List<AudioRecordingConfiguration>) {
             updateVirtualizerForRecording(configs.isNotEmpty())
@@ -46,31 +57,43 @@ class DolbyController private constructor(private val context: Context) {
     private val playbackCallback = object : AudioManager.AudioPlaybackCallback() {
         override fun onPlaybackConfigChanged(configs: List<AudioPlaybackConfiguration>) {
             val isPlaying = configs.any { it.playerState == AudioPlaybackConfiguration.PLAYER_STATE_STARTED }
-            if (isPlaying && (dolbyAudioEffect == null || !dolbyAudioEffect!!.hasControl())) {
-                dlog(TAG, "Playback active and effect needs control, restoring settings")
-                restoreSettings()
+            val effectNeedsStart = preferenceStore.dsOn && (dolbyAudioEffect == null || !dolbyAudioEffect!!.hasControl() || !dolbyAudioEffect!!.enabled)
+            if (isPlaying && (!wasPlaying || effectNeedsStart)) {
+                dlog(TAG, "Playback active, effectNeedsStart=$effectNeedsStart, ensuring effect is attached and restored")
+                if (dolbyAudioEffect == null || !dolbyAudioEffect!!.hasControl()) {
+                    reinitEffectAndRestore()
+                } else if (effectNeedsStart) {
+                    restoreSettings()
+                }
             }
+            wasPlaying = isPlaying
         }
     }
 
     private val deviceCallback = object : AudioDeviceCallback() {
         override fun onAudioDevicesAdded(addedDevices: Array<out AudioDeviceInfo>?) {
-            checkEffect()
+            dlog(TAG, "Audio devices added, posting effect reinitialization")
+            postReinitEffect()
         }
 
         override fun onAudioDevicesRemoved(removedDevices: Array<out AudioDeviceInfo>?) {
-            checkEffect()
+            dlog(TAG, "Audio devices removed, posting effect reinitialization")
+            postReinitEffect()
         }
     }
 
     init {
-        initEffect()
+        initEffect(restore = true)
         audioManager.registerAudioRecordingCallback(recordingCallback, handler)
         audioManager.registerAudioPlaybackCallback(playbackCallback, handler)
         audioManager.registerAudioDeviceCallback(deviceCallback, handler)
     }
 
-    private fun initEffect() {
+    fun reinitEffectAndRestore() {
+        initEffect(restore = true)
+    }
+
+    private fun initEffect(restore: Boolean = false) {
         try {
             dolbyAudioEffect?.release()
         } catch (e: Exception) {
@@ -79,6 +102,9 @@ class DolbyController private constructor(private val context: Context) {
         try {
             dolbyAudioEffect = DolbyAudioEffect(EFFECT_PRIORITY, AUDIO_SESSION_GLOBAL)
             dlog(TAG, "DolbyAudioEffect initialized successfully")
+            if (restore) {
+                restoreSettings()
+            }
         } catch (e: Exception) {
             elog(TAG, "Failed to initialize DolbyAudioEffect: ${e.message}", e)
             dolbyAudioEffect = null
@@ -88,7 +114,7 @@ class DolbyController private constructor(private val context: Context) {
     private fun checkEffect(): Boolean {
         if (dolbyAudioEffect == null || !dolbyAudioEffect!!.hasControl()) {
             dlog(TAG, "DolbyAudioEffect null or lost control, reinitializing...")
-            initEffect()
+            initEffect(restore = true)
         }
         return dolbyAudioEffect != null
     }
@@ -112,7 +138,10 @@ class DolbyController private constructor(private val context: Context) {
     }
 
     fun restoreSettings() {
-        if (!checkEffect()) return
+        if (dolbyAudioEffect == null || !dolbyAudioEffect!!.hasControl()) {
+            initEffect(restore = false)
+            if (dolbyAudioEffect == null) return
+        }
         val currentProfile = preferenceStore.profile
         val baseId = currentBaseProfileId
         dolbyAudioEffect?.profile = baseId
@@ -155,8 +184,17 @@ class DolbyController private constructor(private val context: Context) {
         get() = dolbyAudioEffect?.dsOn ?: preferenceStore.dsOn
         set(value) {
             preferenceStore.dsOn = value
-            checkEffectAndRun {
-                dolbyAudioEffect?.dsOn = value
+            if (value) {
+                if (dolbyAudioEffect == null || !dolbyAudioEffect!!.hasControl()) {
+                    reinitEffectAndRestore()
+                } else {
+                    dolbyAudioEffect?.dsOn = true
+                    restoreSettings()
+                }
+            } else {
+                checkEffectAndRun {
+                    dolbyAudioEffect?.dsOn = false
+                }
             }
         }
 
