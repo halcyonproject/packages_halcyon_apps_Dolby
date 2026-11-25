@@ -13,7 +13,11 @@ import org.hlcyn.dolby.DolbyConstants.Companion.elog
 import org.hlcyn.dolby.DolbyConstants.DsParam
 import java.util.UUID
 
-class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
+class DolbyAudioEffect(
+    priority: Int,
+    audioSession: Int,
+    private val usePortStereoWidening: Boolean = false
+) : AudioEffect(
     EFFECT_TYPE_NULL, findDapEffectUuid(), priority, audioSession
 ) {
 
@@ -44,11 +48,21 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         }
         set(value) {
             try {
-                if (value && (!hasControl() || !enabled)) {
-                    checkStatus(setEnabled(true))
+                if (value) {
+                    if (!hasControl() || !enabled) {
+                        checkStatus(setEnabled(true))
+                    }
+                    setBypass(false)
+                    setIntParam(EFFECT_PARAM_ENABLE, 1)
+                } else {
+                    setBypass(true)
+                    try {
+                        setIntParam(EFFECT_PARAM_ENABLE, 0)
+                    } catch (e: Exception) {
+                        dlog(TAG, "EFFECT_PARAM_ENABLE=0 unsupported on this HAL: ${e.message}")
+                    }
+                    setEnabled(false)
                 }
-                setBypass(!value)
-                setIntParam(EFFECT_PARAM_ENABLE, if (value) 1 else 0)
             } catch (e: Exception) {
                 elog(TAG, "Error setting dsOn: ${e.message}", e)
             }
@@ -94,8 +108,33 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         }
     }
 
+    fun setDapPortParameter(
+        param: DsParam,
+        values: IntArray,
+        port: Int = PORT_HEADPHONE,
+        profile: Int = this.profile
+    ) {
+        dlog(TAG, "setDapPortParameter: profile=$profile port=$port param=$param")
+        val length = values.size
+        val buf = ByteArray((length + 5) * 4)
+        int32ToByteArray(EFFECT_PARAM_SET_PROFILE_PORT_PARAMETER, buf, 0)
+        int32ToByteArray(length + 2, buf, 4)
+        int32ToByteArray(profile, buf, 8)
+        int32ToByteArray(port, buf, 12)
+        int32ToByteArray(param.id, buf, 16)
+        int32ArrayToByteArray(values, buf, 20)
+        checkStatus(setParameter(EFFECT_PARAM_CPDP_VALUES, buf))
+    }
+
     fun setDapParameter(param: DsParam, values: IntArray, profile: Int = this.profile) {
-        dlog(TAG, "setDapParameter: profile=$profile param=$param")
+        dlog(TAG, "setDapParameter: profile=$profile param=$param values=${values.contentToString()}")
+        if (usePortStereoWidening && param == DsParam.STEREO_WIDENING_AMOUNT) {
+            try {
+                setDapPortParameter(param, values, PORT_HEADPHONE, profile)
+            } catch (e: Exception) {
+                dlog(TAG, "setDapPortParameter unsupported or failed: ${e.message}")
+            }
+        }
         val length = values.size
         val buf = ByteArray((length + 4) * 4)
         int32ToByteArray(EFFECT_PARAM_SET_PROFILE_PARAMETER, buf, 0)
@@ -161,8 +200,12 @@ class DolbyAudioEffect(priority: Int, audioSession: Int) : AudioEffect(
         private const val EFFECT_PARAM_SET_BYPASS = 18
         private const val EFFECT_PARAM_PROFILE = 0xA000000
         private const val EFFECT_PARAM_SET_PROFILE_PARAMETER = 0x1000000
+        private const val EFFECT_PARAM_SET_PROFILE_PORT_PARAMETER = 0x2000000
         private const val EFFECT_PARAM_GET_PROFILE_PARAMETER = 0x1000005
         private const val EFFECT_PARAM_RESET_PROFILE_SETTINGS = 0xC000000
+
+        const val PORT_INTERNAL_SPEAKER = 0
+        const val PORT_HEADPHONE = 1
 
         private fun findDapEffectUuid(): UUID {
             try {

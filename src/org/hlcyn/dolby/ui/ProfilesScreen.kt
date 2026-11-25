@@ -70,6 +70,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -377,12 +378,16 @@ private fun CreateProfileDialog(
     var selectedBaseId by remember { mutableIntStateOf(0) }
     var errorText by remember { mutableStateOf<String?>(null) }
 
-    val baseProfiles = listOf(
-        0 to stringResource(R.string.dolby_profile_dynamic),
-        1 to stringResource(R.string.dolby_profile_video),
-        2 to stringResource(R.string.dolby_profile_music),
-        8 to stringResource(R.string.dolby_profile_voice)
-    )
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val profileEntries = stringArrayResource(R.array.dolby_profile_entries)
+    val profileValues = stringArrayResource(R.array.dolby_profile_values)
+    val baseProfiles = remember(profileEntries, profileValues, context) {
+        profileValues.mapIndexedNotNull { index, valueStr ->
+            val id = valueStr.toIntOrNull() ?: return@mapIndexedNotNull null
+            val rawLabel = profileEntries.getOrElse(index) { valueStr }
+            id to org.hlcyn.dolby.DolbyConstants.resolveProfileLabel(context, rawLabel)
+        }
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,

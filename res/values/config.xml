@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2024-2026 Halcyon Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Whether to also send setProfilePortParameter(0x2000000) on PORT_HEADPHONE
+         when setting STEREO_WIDENING_AMOUNT (113). -->
+    <bool name="config_dolby_port_stereo_widening">false</bool>
+
+    <!-- Minimum IEQ_AMOUNT (107) to enforce when enabling an IEQ preset (0 = do not modify). -->
+    <integer name="config_dolby_min_ieq_amount">0</integer>
+
+    <!-- Whether to toggle IEQ_PRESET through 0 when selecting an already-stored preset ID
+         so HALs with ieq-enable=false + included ieq_preset turn ieq_enable on. -->
+    <bool name="config_dolby_force_ieq_reapply">false</bool>
+
+    <!-- Optional per-profile defaults formatted as:
+         "profileId:ieq,dialogue,bass,stereo,volume,hpVirt,spkVirt"
+         When empty, uncustomized profile settings query live HAL values. -->
+    <string-array name="config_dolby_profile_defaults" translatable="false" />
+</resources>

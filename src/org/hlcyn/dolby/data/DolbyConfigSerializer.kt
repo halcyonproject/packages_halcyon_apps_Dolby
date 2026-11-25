@@ -14,6 +14,7 @@ import org.hlcyn.dolby.DolbyConstants
 import org.hlcyn.dolby.DolbyController
 import org.hlcyn.dolby.R
 import org.hlcyn.dolby.geq.data.EqualizerRepository
+import org.hlcyn.dolby.preference.DolbyPreferenceStore
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -56,22 +57,23 @@ object DolbyConfigSerializer {
         val profile = profileRepo.getProfile(profileId)
         val profileName = profile?.name ?: context.getString(R.string.dolby_profile_dynamic)
 
+        val prefStore = DolbyPreferenceStore(context)
         val isCurrent = (profileId == dolbyController.profile)
 
         val ieqPreset = if (isCurrent) dolbyController.ieqPreset
-                        else sharedPreferences.getInt("${DolbyConstants.PREF_IEQ}_$profileId", 0)
+                        else prefStore.getIeqPresetFor(profileId)
         val dialogueAmount = if (isCurrent) dolbyController.dialogueEnhancerAmount
-                             else sharedPreferences.getInt("${DolbyConstants.PREF_DIALOGUE}_$profileId", 0)
+                             else prefStore.getDialogueEnhancerAmountFor(profileId)
         val bassEnabled = if (isCurrent) dolbyController.bassEnhancerEnabled
-                          else sharedPreferences.getBoolean("${DolbyConstants.PREF_BASS}_$profileId", false)
+                          else prefStore.getBassEnhancerEnabledFor(profileId)
         val stereoAmount = if (isCurrent) dolbyController.stereoWideningAmount
-                           else sharedPreferences.getInt("${DolbyConstants.PREF_STEREO}_$profileId", 0)
+                           else prefStore.getStereoWideningAmountFor(profileId)
         val volumeEnabled = if (isCurrent) dolbyController.volumeLevelerEnabled
-                            else sharedPreferences.getBoolean("${DolbyConstants.PREF_VOLUME}_$profileId", false)
+                            else prefStore.getVolumeLevelerEnabledFor(profileId)
         val hpVirtEnabled = if (isCurrent) dolbyController.headphoneVirtEnabled
-                            else sharedPreferences.getBoolean("${DolbyConstants.PREF_HP_VIRTUALIZER}_$profileId", false)
+                            else prefStore.getHeadphoneVirtEnabledFor(profileId)
         val spkVirtEnabled = if (isCurrent) dolbyController.speakerVirtEnabled
-                             else sharedPreferences.getBoolean("${DolbyConstants.PREF_SPK_VIRTUALIZER}_$profileId", false)
+                             else prefStore.getSpeakerVirtEnabledFor(profileId)
 
         val root = JSONObject().apply {
             put(KEY_VERSION, CURRENT_VERSION)
@@ -142,7 +144,11 @@ object DolbyConfigSerializer {
                     editor.putBoolean("${DolbyConstants.PREF_BASS}_$newProfileId", settingsObj.getBoolean(KEY_BASS_ENABLED))
                 }
                 if (settingsObj.has(KEY_STEREO_AMOUNT)) {
-                    editor.putInt("${DolbyConstants.PREF_STEREO}_$newProfileId", settingsObj.getInt(KEY_STEREO_AMOUNT))
+                    val clampedStereo = settingsObj.getInt(KEY_STEREO_AMOUNT).coerceIn(
+                        DolbyConstants.getMinStereoWidening(context),
+                        DolbyConstants.getMaxStereoWidening(context)
+                    )
+                    editor.putInt("${DolbyConstants.PREF_STEREO}_$newProfileId", clampedStereo)
                 }
                 if (settingsObj.has(KEY_VOLUME_ENABLED)) {
                     editor.putBoolean("${DolbyConstants.PREF_VOLUME}_$newProfileId", settingsObj.getBoolean(KEY_VOLUME_ENABLED))

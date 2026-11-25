@@ -7,6 +7,7 @@
 
 package org.hlcyn.dolby
 
+import android.content.Context
 import android.util.Log
 
 class DolbyConstants {
@@ -17,6 +18,8 @@ class DolbyConstants {
         VOLUME_LEVELER_ENABLE(103),
         IEQ_PRESET(104),
         DIALOGUE_ENHANCER_ENABLE(105),
+        GRAPHIC_EQUALIZER_ENABLE(106),
+        IEQ_AMOUNT(107),
         DIALOGUE_ENHANCER_AMOUNT(108),
         GEQ_BAND_GAINS(110, 20),
         BASS_ENHANCER_ENABLE(111),
@@ -28,6 +31,10 @@ class DolbyConstants {
     companion object {
         const val TAG = "XiaomiDolby"
         val DEBUG = Log.isLoggable(TAG, Log.DEBUG) || android.os.Build.IS_DEBUGGABLE
+
+        const val PREF_SCHEMA_VERSION = "dolby_pref_schema_version"
+        const val PREF_PENDING_HAL_HEAL = "dolby_pending_hal_heal"
+        const val CURRENT_SCHEMA_VERSION = 2
 
         const val PREF_ENABLE = "dolby_enable"
         const val PREF_PROFILE = "dolby_profile"
@@ -55,6 +62,43 @@ class DolbyConstants {
             PREF_BASS,
             PREF_VOLUME,
         )
+
+        fun getBuiltInProfileIds(context: Context): IntArray =
+            context.resources.getStringArray(R.array.dolby_profile_values)
+                .mapNotNull { it.toIntOrNull() }
+                .toIntArray()
+
+        fun getMinStereoWidening(context: Context): Int =
+            context.resources.getStringArray(R.array.dolby_stereo_values)
+                .mapNotNull { it.toIntOrNull() }
+                .minOrNull() ?: 0
+
+        fun getMaxStereoWidening(context: Context): Int =
+            context.resources.getStringArray(R.array.dolby_stereo_values)
+                .mapNotNull { it.toIntOrNull() }
+                .maxOrNull() ?: 64
+
+        fun getMaxDialogueAmount(context: Context): Int =
+            context.resources.getStringArray(R.array.dolby_dialogue_values)
+                .mapNotNull { it.toIntOrNull() }
+                .maxOrNull() ?: 12
+
+        fun resolveProfileLabel(context: Context, raw: String): String = when (raw) {
+            "dynamic" -> context.getString(R.string.dolby_profile_dynamic)
+            "video" -> context.getString(R.string.dolby_profile_video)
+            "music" -> context.getString(R.string.dolby_profile_music)
+            "game" -> context.getString(R.string.dolby_profile_game)
+            "voice" -> context.getString(R.string.dolby_profile_voice)
+            else -> raw
+        }
+
+        fun resolveIeqLabel(context: Context, raw: String): String = when (raw) {
+            "off" -> context.getString(R.string.dolby_off)
+            "detailed" -> context.getString(R.string.dolby_detailed)
+            "balanced" -> context.getString(R.string.dolby_balanced)
+            "warm" -> context.getString(R.string.dolby_warm)
+            else -> raw
+        }
 
         fun dlog(tag: String, msg: String) {
             if (DEBUG) Log.d(tag, msg)

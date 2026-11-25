@@ -76,7 +76,10 @@ fun DolbyScreen(
     val connectedAudioDevice by viewModel.connectedAudioDevice.collectAsStateWithLifecycle()
     val isQsTileAdded by viewModel.isQsTileAdded.collectAsStateWithLifecycle()
 
-    val ieqEntries = stringArrayResource(R.array.dolby_ieq_entries)
+    val rawIeqEntries = stringArrayResource(R.array.dolby_ieq_entries)
+    val ieqEntries = remember(rawIeqEntries, context) {
+        rawIeqEntries.map { org.hlcyn.dolby.DolbyConstants.resolveIeqLabel(context, it) }.toTypedArray()
+    }
     val ieqValues = stringArrayResource(R.array.dolby_ieq_values)
     val stereoEntries = stringArrayResource(R.array.dolby_stereo_entries)
     val stereoValues = stringArrayResource(R.array.dolby_stereo_values)
@@ -189,17 +192,24 @@ fun DolbyScreen(
                 }
             )
 
+            val detailedText = stringResource(R.string.dolby_detailed)
+            val balancedText = stringResource(R.string.dolby_balanced)
+            val warmText = stringResource(R.string.dolby_warm)
+            fun resolveIeqIcon(label: String?): Int = when (label) {
+                detailedText -> R.drawable.ic_ieq_detailed
+                balancedText -> R.drawable.ic_ieq_balanced
+                warmText -> R.drawable.ic_ieq_warm
+                else -> R.drawable.ic_ieq_off
+            }
+
             IconListPreference(
-                model = remember(ieqPreset, dsOn) {
+                model = remember(ieqPreset, dsOn, ieqEntries, ieqValues) {
                     object : IconListPreferenceModel {
                         override val title = context.getString(R.string.dolby_ieq)
                         override val icon = @Composable {
-                            val ieqIconRes = when (ieqPreset) {
-                                1 -> R.drawable.ic_ieq_balanced
-                                2 -> R.drawable.ic_ieq_warm
-                                3 -> R.drawable.ic_ieq_detailed
-                                else -> R.drawable.ic_ieq_off
-                            }
+                            val selectedIndex = ieqValues.indexOfFirst { it.toIntOrNull() == ieqPreset }
+                            val selectedLabel = ieqEntries.getOrNull(selectedIndex)
+                            val ieqIconRes = resolveIeqIcon(selectedLabel)
                             Icon(
                                 painter = painterResource(id = ieqIconRes),
                                 contentDescription = null,
@@ -210,12 +220,7 @@ fun DolbyScreen(
                         override val enabled = { dsOn }
                         override val options = ieqEntries.mapIndexed { index, name ->
                             val value = ieqValues.getOrNull(index)?.toIntOrNull() ?: index
-                            val itemIconRes = when (value) {
-                                1 -> R.drawable.ic_ieq_balanced
-                                2 -> R.drawable.ic_ieq_warm
-                                3 -> R.drawable.ic_ieq_detailed
-                                else -> R.drawable.ic_ieq_off
-                            }
+                            val itemIconRes = resolveIeqIcon(name)
                             IconListPreferenceOption(
                                 id = value,
                                 text = name,

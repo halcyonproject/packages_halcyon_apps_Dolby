@@ -178,7 +178,8 @@ class DolbyViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setStereoWideningAmount(amount: Int) {
         dolbyController.stereoWideningAmount = amount
-        _stereoWideningAmount.value = amount
+        _stereoWideningAmount.value = dolbyController.stereoWideningAmount
+        _headphoneVirtEnabled.value = dolbyController.headphoneVirtEnabled
     }
 
     fun setDialogueEnhancerAmount(amount: Int) {

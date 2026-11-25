@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -66,12 +67,18 @@ fun DiscreteSliderPreference(
     onValueChangeFinished: (Int) -> Unit
 ) {
     val currentIndex = remember(currentValue, values) {
-        val idx = values.indexOf(currentValue)
-        if (idx >= 0) idx else 0
+        if (values.isEmpty() || currentValue <= values.first()) {
+            0
+        } else {
+            values.indices.minByOrNull { kotlin.math.abs(values[it] - currentValue) } ?: 0
+        }
     }
 
     var sliderIndex by remember(currentIndex) {
         mutableFloatStateOf(currentIndex.toFloat())
+    }
+    var lastDispatchedIndex by remember(currentIndex) {
+        mutableIntStateOf(currentIndex)
     }
 
     val activeDisplayIndex = sliderIndex.roundToInt().coerceIn(0, (values.size - 1).coerceAtLeast(0))
@@ -150,12 +157,20 @@ fun DiscreteSliderPreference(
                     onValueChange = {
                         if (enabled) {
                             sliderIndex = it
+                            val stepIndex = it.roundToInt().coerceIn(0, values.size - 1)
+                            if (stepIndex != lastDispatchedIndex) {
+                                lastDispatchedIndex = stepIndex
+                                onValueChangeFinished(values[stepIndex])
+                            }
                         }
                     },
                     onValueChangeFinished = {
                         val targetIndex = sliderIndex.roundToInt().coerceIn(0, values.size - 1)
-                        val targetValue = values[targetIndex]
-                        onValueChangeFinished(targetValue)
+                        sliderIndex = targetIndex.toFloat()
+                        if (targetIndex != lastDispatchedIndex) {
+                            lastDispatchedIndex = targetIndex
+                            onValueChangeFinished(values[targetIndex])
+                        }
                     },
                     valueRange = 0f..(values.size - 1).toFloat(),
                     steps = (values.size - 2).coerceAtLeast(0),

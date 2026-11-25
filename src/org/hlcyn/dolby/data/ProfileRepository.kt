@@ -27,13 +27,18 @@ class ProfileRepository private constructor(private val context: Context) {
     private fun getBuiltInProfiles(): List<DolbyProfile> {
         val entries = context.resources.getStringArray(R.array.dolby_profile_entries)
         val values = context.resources.getStringArray(R.array.dolby_profile_values)
+        val videoLabel = context.getString(R.string.dolby_profile_video)
+        val musicLabel = context.getString(R.string.dolby_profile_music)
+        val gameLabel = context.getString(R.string.dolby_profile_game)
+        val voiceLabel = context.getString(R.string.dolby_profile_voice)
         return values.mapIndexed { index, valueStr ->
             val id = valueStr.toInt()
-            val name = entries.getOrElse(index) { valueStr }
-            val iconRes = when (id) {
-                1 -> R.drawable.ic_dolby_movie
-                2 -> R.drawable.ic_dolby_music
-                8 -> R.drawable.ic_dolby_voice
+            val name = DolbyConstants.resolveProfileLabel(context, entries.getOrElse(index) { valueStr })
+            val iconRes = when (name) {
+                videoLabel -> R.drawable.ic_dolby_movie
+                musicLabel -> R.drawable.ic_dolby_music
+                gameLabel -> R.drawable.ic_dolby_game
+                voiceLabel -> R.drawable.ic_dolby_voice
                 else -> R.drawable.ic_dolby_dynamic
             }
             DolbyProfile(
