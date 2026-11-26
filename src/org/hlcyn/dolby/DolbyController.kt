@@ -49,7 +49,7 @@ class DolbyController private constructor(private val context: Context) {
     private var lastAppliedProfileId: Int = -1
     private var lastAppliedBaseProfileId: Int = -1
     private var pendingHalHeal: Boolean = preferenceStore.consumePendingHalHeal()
-    private var subEffectsGatedForBypass: Boolean = false
+    private val gatedBaseProfileIds = mutableSetOf<Int>()
 
     private val _dsOnFlow = MutableStateFlow(preferenceStore.dsOn)
     val dsOnFlow: StateFlow<Boolean> = _dsOnFlow.asStateFlow()
@@ -197,7 +197,7 @@ class DolbyController private constructor(private val context: Context) {
                 effect.resetProfileSpecificSettings(builtInId)
             }
             pendingHalHeal = false
-            subEffectsGatedForBypass = false
+            gatedBaseProfileIds.clear()
         }
 
         val currentProfile = preferenceStore.profile
@@ -223,16 +223,18 @@ class DolbyController private constructor(private val context: Context) {
             effect.dsOn = false
             if (!disableAudioEffect) {
                 gateAllSubEffectsOff()
-                subEffectsGatedForBypass = true
+                gatedBaseProfileIds.add(baseId)
             }
             loadGeqGainsIntoMemory()
             return
         }
 
         effect.dsOn = true
-        if (subEffectsGatedForBypass) {
-            effect.resetProfileSpecificSettings(baseId)
-            subEffectsGatedForBypass = false
+        if (gatedBaseProfileIds.isNotEmpty()) {
+            for (gatedId in gatedBaseProfileIds) {
+                effect.resetProfileSpecificSettings(gatedId)
+            }
+            gatedBaseProfileIds.clear()
         }
         restoreProfileOverridesToHal(effect, currentProfile, baseId, forceAll = isCustom)
     }
@@ -342,7 +344,7 @@ class DolbyController private constructor(private val context: Context) {
                     dolbyAudioEffect?.dsOn = false
                     if (!disableAudioEffect) {
                         gateAllSubEffectsOff()
-                        subEffectsGatedForBypass = true
+                        gatedBaseProfileIds.add(currentBaseProfileId)
                     }
                 }
             }
