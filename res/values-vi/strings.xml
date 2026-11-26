@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Mở rộng trường âm thanh nổi</string>
     <string name="dolby_volume_leveler">Cân bằng âm lượng</string>
     <string name="dolby_volume_leveler_summary">Duy trì mức âm lượng ổn định trên mọi phương tiện</string>
+    <string name="dolby_control_lost_warning">Một ứng dụng âm thanh khác đang điều khiển Dolby Atmos</string>
     <string name="dolby_connect_headphones">Kết nối tai nghe</string>
     <string name="dolby_reset_profile">Đặt lại về mặc định</string>
     <string name="dolby_reset_profile_toast">Đã đặt lại thành công cài đặt cho hồ sơ %1$s</string>
     <string name="dolby_profile_dynamic">Động</string>
     <string name="dolby_profile_video">Phim/Video</string>
     <string name="dolby_profile_music">Âm nhạc</string>
+    <string name="dolby_profile_game">Trò chơi</string>
     <string name="dolby_profile_voice">Giọng nói</string>
     <string name="dolby_preset_default">Phẳng (tắt)</string>
     <string name="dolby_preset_rock">Rock</string>

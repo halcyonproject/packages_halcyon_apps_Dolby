@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">ขยายมิติเวทีเสียงสเตอริโอให้กว้างขึ้น</string>
     <string name="dolby_volume_leveler">ปรับระดับเสียงให้คงที่</string>
     <string name="dolby_volume_leveler_summary">รักษาระดับความดังของเสียงให้สม่ำเสมอในทุกสื่อ</string>
+    <string name="dolby_control_lost_warning">แอปเสียงอื่นกำลังควบคุม Dolby Atmos อยู่</string>
     <string name="dolby_connect_headphones">เชื่อมต่อหูฟัง</string>
     <string name="dolby_reset_profile">รีเซ็ตเป็นค่าเริ่มต้น</string>
     <string name="dolby_reset_profile_toast">รีเซ็ตการตั้งค่าสำหรับโปรไฟล์ %1$s สำเร็จแล้ว</string>
     <string name="dolby_profile_dynamic">ไดนามิก</string>
     <string name="dolby_profile_video">ภาพยนตร์/วิดีโอ</string>
     <string name="dolby_profile_music">เพลง</string>
+    <string name="dolby_profile_game">เกม</string>
     <string name="dolby_profile_voice">เสียงพูด</string>
     <string name="dolby_preset_default">แฟลต (ปิด)</string>
     <string name="dolby_preset_rock">ร็อก</string>

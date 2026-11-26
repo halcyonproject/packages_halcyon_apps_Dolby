@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">ステレオサウンドの広がりを拡大します</string>
     <string name="dolby_volume_leveler">音量レベラー</string>
     <string name="dolby_volume_leveler_summary">メディア間の音量を均一に保ちます</string>
+    <string name="dolby_control_lost_warning">他のオーディオアプリが Dolby Atmos を制御しています</string>
     <string name="dolby_connect_headphones">ヘッドフォンを接続してください</string>
     <string name="dolby_reset_profile">デフォルトに戻す</string>
     <string name="dolby_reset_profile_toast">%1$s プロファイルの設定を初期化しました</string>
     <string name="dolby_profile_dynamic">ダイナミック</string>
     <string name="dolby_profile_video">映画・動画</string>
     <string name="dolby_profile_music">音楽</string>
+    <string name="dolby_profile_game">ゲーム</string>
     <string name="dolby_profile_voice">音声</string>
     <string name="dolby_preset_default">フラット（オフ）</string>
     <string name="dolby_preset_rock">ロック</string>

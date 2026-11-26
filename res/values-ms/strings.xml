@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Memperluaskan medan bunyi stereo</string>
     <string name="dolby_volume_leveler">Penyamarata kelantangan</string>
     <string name="dolby_volume_leveler_summary">Mengekalkan kelantangan yang konsisten merentas media</string>
+    <string name="dolby_control_lost_warning">Aplikasi audio lain sedang mengawal Dolby Atmos</string>
     <string name="dolby_connect_headphones">Sambungkan fon kepala</string>
     <string name="dolby_reset_profile">Tetapkan semula kepada lalai</string>
     <string name="dolby_reset_profile_toast">Berjaya menetapkan semula tetapan untuk profil %1$s</string>
     <string name="dolby_profile_dynamic">Dinamik</string>
     <string name="dolby_profile_video">Filem/Video</string>
     <string name="dolby_profile_music">Muzik</string>
+    <string name="dolby_profile_game">Permainan</string>
     <string name="dolby_profile_voice">Suara</string>
     <string name="dolby_preset_default">Rata (mati)</string>
     <string name="dolby_preset_rock">Rock</string>

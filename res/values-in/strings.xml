@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Memperluas bidang suara stereo</string>
     <string name="dolby_volume_leveler">Penyeimbang volume</string>
     <string name="dolby_volume_leveler_summary">Menjaga kenyaringan tetap konsisten di seluruh media</string>
+    <string name="dolby_control_lost_warning">Dolby Atmos sedang dikontrol aplikasi audio lain</string>
     <string name="dolby_connect_headphones">Sambungkan headphone</string>
     <string name="dolby_reset_profile">Atur ulang ke default</string>
     <string name="dolby_reset_profile_toast">Berhasil mengatur ulang setelan untuk profil %1$s</string>
     <string name="dolby_profile_dynamic">Dinamis</string>
     <string name="dolby_profile_video">Film/Video</string>
     <string name="dolby_profile_music">Musik</string>
+    <string name="dolby_profile_game">Game</string>
     <string name="dolby_profile_voice">Suara</string>
     <string name="dolby_preset_default">Datar (nonaktif)</string>
     <string name="dolby_preset_rock">Rock</string>

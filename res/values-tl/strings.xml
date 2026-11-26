@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Pinalalawak ang sound field ng stereo</string>
     <string name="dolby_volume_leveler">Pampantay ng volume</string>
     <string name="dolby_volume_leveler_summary">Pinapanatili ang pantay na lakas ng tunog sa lahat ng media</string>
+    <string name="dolby_control_lost_warning">Kinokontrol ngayon ng ibang audio app ang Dolby Atmos</string>
     <string name="dolby_connect_headphones">Ikonekta ang headphone</string>
     <string name="dolby_reset_profile">I-reset sa default</string>
     <string name="dolby_reset_profile_toast">Matagumpay na na-reset ang mga setting para sa profile na %1$s</string>
     <string name="dolby_profile_dynamic">Dynamic</string>
     <string name="dolby_profile_video">Pelikula/Video</string>
     <string name="dolby_profile_music">Musika</string>
+    <string name="dolby_profile_game">Laro</string>
     <string name="dolby_profile_voice">Boses</string>
     <string name="dolby_preset_default">Flat (naka-off)</string>
     <string name="dolby_preset_rock">Rock</string>

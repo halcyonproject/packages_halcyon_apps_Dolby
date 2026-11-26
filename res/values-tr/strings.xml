@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Stereo ses alanını genişletir</string>
     <string name="dolby_volume_leveler">Ses seviyeleyici</string>
     <string name="dolby_volume_leveler_summary">Farklı medyalarda tutarlı bir ses seviyesi korur</string>
+    <string name="dolby_control_lost_warning">Dolby Atmos şu anda başka bir ses uygulaması tarafından kontrol ediliyor</string>
     <string name="dolby_connect_headphones">Kulaklık bağlayın</string>
     <string name="dolby_reset_profile">Varsayılanlara sıfırla</string>
     <string name="dolby_reset_profile_toast">%1$s profili ayarları başarıyla sıfırlandı</string>
     <string name="dolby_profile_dynamic">Dinamik</string>
     <string name="dolby_profile_video">Film/Video</string>
     <string name="dolby_profile_music">Müzik</string>
+    <string name="dolby_profile_game">Oyun</string>
     <string name="dolby_profile_voice">Ses</string>
     <string name="dolby_preset_default">Düz (kapalı)</string>
     <string name="dolby_preset_rock">Rock</string>

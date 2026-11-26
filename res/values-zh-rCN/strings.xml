@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">扩大立体声音场</string>
     <string name="dolby_volume_leveler">音量平衡器</string>
     <string name="dolby_volume_leveler_summary">保持媒体播放音量均衡一致</string>
+    <string name="dolby_control_lost_warning">其他音频应用正在控制 Dolby Atmos</string>
     <string name="dolby_connect_headphones">连接耳机</string>
     <string name="dolby_reset_profile">恢复默认设置</string>
     <string name="dolby_reset_profile_toast">已成功重置 %1$s 配置文件的设置</string>
     <string name="dolby_profile_dynamic">动态</string>
     <string name="dolby_profile_video">电影/视频</string>
     <string name="dolby_profile_music">音乐</string>
+    <string name="dolby_profile_game">游戏</string>
     <string name="dolby_profile_voice">人声</string>
     <string name="dolby_preset_default">平坦 (关闭)</string>
     <string name="dolby_preset_rock">摇滚</string>

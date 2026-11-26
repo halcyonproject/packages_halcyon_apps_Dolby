@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Разширява полето на стереозвука</string>
     <string name="dolby_volume_leveler">Изравняване на силата на звука</string>
     <string name="dolby_volume_leveler_summary">Поддържа постоянна сила на звука при различно съдържание</string>
+    <string name="dolby_control_lost_warning">Друго аудио приложение управлява Dolby Atmos в момента</string>
     <string name="dolby_connect_headphones">Свържете слушалки</string>
     <string name="dolby_reset_profile">Възстановяване по подразбиране</string>
     <string name="dolby_reset_profile_toast">Настройките за профил %1$s са възстановени успешно</string>
     <string name="dolby_profile_dynamic">Динамичен</string>
     <string name="dolby_profile_video">Филм/Видео</string>
     <string name="dolby_profile_music">Музика</string>
+    <string name="dolby_profile_game">Игри</string>
     <string name="dolby_profile_voice">Глас</string>
     <string name="dolby_preset_default">Плосък (изкл.)</string>
     <string name="dolby_preset_rock">Рок</string>

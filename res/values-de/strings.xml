@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Erweitert das Stereo-Klangfeld</string>
     <string name="dolby_volume_leveler">Lautstärkeausgleich</string>
     <string name="dolby_volume_leveler_summary">Hält die Lautstärke über verschiedene Medien hinweg konstant</string>
+    <string name="dolby_control_lost_warning">Eine andere Audio-App steuert gerade Dolby Atmos</string>
     <string name="dolby_connect_headphones">Kopfhörer anschließen</string>
     <string name="dolby_reset_profile">Auf Standard zurücksetzen</string>
     <string name="dolby_reset_profile_toast">Einstellungen für Profil %1$s erfolgreich zurückgesetzt</string>
     <string name="dolby_profile_dynamic">Dynamisch</string>
     <string name="dolby_profile_video">Film/Video</string>
     <string name="dolby_profile_music">Musik</string>
+    <string name="dolby_profile_game">Spiele</string>
     <string name="dolby_profile_voice">Sprache</string>
     <string name="dolby_preset_default">Linear (aus)</string>
     <string name="dolby_preset_rock">Rock</string>

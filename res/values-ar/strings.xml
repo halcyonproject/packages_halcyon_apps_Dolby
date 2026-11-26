@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">يوسع المجال الصوتي للاستريو</string>
     <string name="dolby_volume_leveler">تسوية مستوى الصوت</string>
     <string name="dolby_volume_leveler_summary">يحافظ على مستوى صوت ثابت عبر مختلف الوسائط</string>
+    <string name="dolby_control_lost_warning">تطبيق صوت آخر يتحكم في Dolby Atmos الآن</string>
     <string name="dolby_connect_headphones">قم بتوصيل سماعات الرأس</string>
     <string name="dolby_reset_profile">إعادة التعيين إلى الإعدادات الافتراضية</string>
     <string name="dolby_reset_profile_toast">تم بنجاح إعادة تعيين إعدادات الملف %1$s</string>
     <string name="dolby_profile_dynamic">ديناميكي</string>
     <string name="dolby_profile_video">فيلم/فيديو</string>
     <string name="dolby_profile_music">موسيقى</string>
+    <string name="dolby_profile_game">ألعاب</string>
     <string name="dolby_profile_voice">صوت</string>
     <string name="dolby_preset_default">مسطح (إيقاف)</string>
     <string name="dolby_preset_rock">روك</string>

@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Expande el campo sonoro estéreo</string>
     <string name="dolby_volume_leveler">Nivelador de volumen</string>
     <string name="dolby_volume_leveler_summary">Mantiene un volumen constante en todo el contenido multimedia</string>
+    <string name="dolby_control_lost_warning">Otra app de audio está controlando Dolby Atmos</string>
     <string name="dolby_connect_headphones">Conectar auriculares</string>
     <string name="dolby_reset_profile">Restablecer valores predeterminados</string>
     <string name="dolby_reset_profile_toast">Ajustes restablecidos correctamente para el perfil %1$s</string>
     <string name="dolby_profile_dynamic">Dinámico</string>
     <string name="dolby_profile_video">Película/Vídeo</string>
     <string name="dolby_profile_music">Música</string>
+    <string name="dolby_profile_game">Juegos</string>
     <string name="dolby_profile_voice">Voz</string>
     <string name="dolby_preset_default">Plano (desactivado)</string>
     <string name="dolby_preset_rock">Rock</string>

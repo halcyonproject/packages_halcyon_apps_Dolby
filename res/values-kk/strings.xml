@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Стерео дыбыс өрісін кеңейтеді</string>
     <string name="dolby_volume_leveler">Дыбыс деңгейін теңестіруші</string>
     <string name="dolby_volume_leveler_summary">Барлық медиада біркелкі дыбыс деңгейін сақтайды</string>
+    <string name="dolby_control_lost_warning">Қазір Dolby Atmos басқа аудио қолданбаның басқаруында</string>
     <string name="dolby_connect_headphones">Құлаққапты қосыңыз</string>
     <string name="dolby_reset_profile">Әдепкі қалпына келтіру</string>
     <string name="dolby_reset_profile_toast">%1$s профилінің параметрлері сәтті қалпына келтірілді</string>
     <string name="dolby_profile_dynamic">Динамикалық</string>
     <string name="dolby_profile_video">Фильм/Бейне</string>
     <string name="dolby_profile_music">Музыка</string>
+    <string name="dolby_profile_game">Ойын</string>
     <string name="dolby_profile_voice">Дауыс</string>
     <string name="dolby_preset_default">Тегіс (өшірулі)</string>
     <string name="dolby_preset_rock">Рок</string>

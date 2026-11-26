@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">擴大立體聲音場</string>
     <string name="dolby_volume_leveler">音量等化器</string>
     <string name="dolby_volume_leveler_summary">保持各類媒體音量均衡一致</string>
+    <string name="dolby_control_lost_warning">其他音訊應用程式正在控制 Dolby Atmos</string>
     <string name="dolby_connect_headphones">連接耳機</string>
     <string name="dolby_reset_profile">重設為預設值</string>
     <string name="dolby_reset_profile_toast">已成功重設 %1$s 設定檔的設定</string>
     <string name="dolby_profile_dynamic">動態</string>
     <string name="dolby_profile_video">電影/影片</string>
     <string name="dolby_profile_music">音樂</string>
+    <string name="dolby_profile_game">遊戲</string>
     <string name="dolby_profile_voice">人聲</string>
     <string name="dolby_preset_default">無效果 (關閉)</string>
     <string name="dolby_preset_rock">搖滾</string>

@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">Пашырае стэрэапанараму</string>
     <string name="dolby_volume_leveler">Выраўноўванне гучнасці</string>
     <string name="dolby_volume_leveler_summary">Падтрымлівае нязменную гучнасць для ўсіх медыя</string>
+    <string name="dolby_control_lost_warning">Іншая аўдыяпраграма зараз кіруе Dolby Atmos</string>
     <string name="dolby_connect_headphones">Падключыце навушнікі</string>
     <string name="dolby_reset_profile">Скінуць да змаўчання</string>
     <string name="dolby_reset_profile_toast">Налады профілю %1$s паспяхова скінуты</string>
     <string name="dolby_profile_dynamic">Дынамічны</string>
     <string name="dolby_profile_video">Фільм/Відэа</string>
     <string name="dolby_profile_music">Музыка</string>
+    <string name="dolby_profile_game">Гульні</string>
     <string name="dolby_profile_voice">Голас</string>
     <string name="dolby_preset_default">Плоскі (выкл)</string>
     <string name="dolby_preset_rock">Рок</string>

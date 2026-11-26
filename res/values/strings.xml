@@ -33,7 +33,7 @@
     <string name="dolby_stereo_widening_summary">Expands stereo sound field</string>
     <string name="dolby_volume_leveler">Volume leveler</string>
     <string name="dolby_volume_leveler_summary">Maintains consistent loudness across media</string>
-    <string name="dolby_control_lost_warning">Dolby Atmos is currently controlled by another audio application</string>
+    <string name="dolby_control_lost_warning">Another audio app is controlling Dolby Atmos</string>
     <string name="dolby_connect_headphones">Connect headphones</string>
     <string name="dolby_reset_profile">Reset to defaults</string>
     <string name="dolby_reset_profile_toast">Reset settings for %1$s profile</string>

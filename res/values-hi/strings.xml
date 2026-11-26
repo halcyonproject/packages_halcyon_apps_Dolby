@@ -31,12 +31,14 @@
     <string name="dolby_stereo_widening_summary">स्टीरियो साउंड फ़ील्ड को विस्तृत करता है</string>
     <string name="dolby_volume_leveler">वॉल्यूम लेवलर</string>
     <string name="dolby_volume_leveler_summary">सभी मीडिया में एक समान वॉल्यूम बनाए रखता है</string>
+    <string name="dolby_control_lost_warning">अभी कोई दूसरा ऑडियो ऐप Dolby Atmos को नियंत्रित कर रहा है</string>
     <string name="dolby_connect_headphones">हेडफ़ोन कनेक्ट करें</string>
     <string name="dolby_reset_profile">डिफ़ॉल्ट पर रीसेट करें</string>
     <string name="dolby_reset_profile_toast">%1$s प्रोफ़ाइल की सेटिंग्स सफलतापूर्वक रीसेट की गईं</string>
     <string name="dolby_profile_dynamic">डायनामिक</string>
     <string name="dolby_profile_video">मूवी/वीडियो</string>
     <string name="dolby_profile_music">संगीत</string>
+    <string name="dolby_profile_game">गेम</string>
     <string name="dolby_profile_voice">आवाज़</string>
     <string name="dolby_preset_default">फ़्लैट (बंद)</string>
     <string name="dolby_preset_rock">रॉक</string>
