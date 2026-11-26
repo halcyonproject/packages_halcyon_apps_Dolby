@@ -4,6 +4,11 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
+    <!-- Whether disabling Dolby calls AudioEffect.setEnabled(false).
+         Keep false on MediaTek DAX3 AIDL (libswdapaidl.so) where STOP/drain
+         returns -61 (-ENODATA) and kills the AudioFlinger FMQ thread. -->
+    <bool name="config_dolby_disable_audio_effect">false</bool>
+
     <!-- Whether to also send setProfilePortParameter(0x2000000) on PORT_HEADPHONE
          when setting STEREO_WIDENING_AMOUNT (113). -->
     <bool name="config_dolby_port_stereo_widening">false</bool>

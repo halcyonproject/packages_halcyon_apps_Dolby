@@ -35,6 +35,7 @@ class DolbyController private constructor(private val context: Context) {
     private val handler = Handler(Looper.getMainLooper())
 
     private val usePortStereoWidening = context.resources.getBoolean(R.bool.config_dolby_port_stereo_widening)
+    private val disableAudioEffect = context.resources.getBoolean(R.bool.config_dolby_disable_audio_effect)
     private val minIeqAmount = context.resources.getInteger(R.integer.config_dolby_min_ieq_amount)
     private val forceIeqReapply = context.resources.getBoolean(R.bool.config_dolby_force_ieq_reapply)
     private val minStereoWidening = DolbyConstants.getMinStereoWidening(context)
@@ -48,6 +49,7 @@ class DolbyController private constructor(private val context: Context) {
     private var lastAppliedProfileId: Int = -1
     private var lastAppliedBaseProfileId: Int = -1
     private var pendingHalHeal: Boolean = preferenceStore.consumePendingHalHeal()
+    private var subEffectsGatedForBypass: Boolean = false
 
     private val _dsOnFlow = MutableStateFlow(preferenceStore.dsOn)
     val dsOnFlow: StateFlow<Boolean> = _dsOnFlow.asStateFlow()
@@ -128,7 +130,8 @@ class DolbyController private constructor(private val context: Context) {
             dolbyAudioEffect = DolbyAudioEffect(
                 EFFECT_PRIORITY,
                 AUDIO_SESSION_GLOBAL,
-                usePortStereoWidening
+                usePortStereoWidening,
+                disableAudioEffect
             ).apply {
                 onControlStatusChanged = { hasControl ->
                     dlog(TAG, "AudioEffect control status updated: $hasControl")
@@ -194,6 +197,7 @@ class DolbyController private constructor(private val context: Context) {
                 effect.resetProfileSpecificSettings(builtInId)
             }
             pendingHalHeal = false
+            subEffectsGatedForBypass = false
         }
 
         val currentProfile = preferenceStore.profile
@@ -217,12 +221,34 @@ class DolbyController private constructor(private val context: Context) {
         if (!preferenceStore.dsOn) {
             dlog(TAG, "restoreSettings: dsOn is false, disabling DAP effect without mutating profile settings")
             effect.dsOn = false
+            if (!disableAudioEffect) {
+                gateAllSubEffectsOff()
+                subEffectsGatedForBypass = true
+            }
             loadGeqGainsIntoMemory()
             return
         }
 
         effect.dsOn = true
+        if (subEffectsGatedForBypass) {
+            effect.resetProfileSpecificSettings(baseId)
+            subEffectsGatedForBypass = false
+        }
         restoreProfileOverridesToHal(effect, currentProfile, baseId, forceAll = isCustom)
+    }
+
+    private fun gateAllSubEffectsOff() {
+        val baseId = currentBaseProfileId
+        dolbyAudioEffect?.let { effect ->
+            dlog(TAG, "gateAllSubEffectsOff: clearing all active sub-effects and zeroing GEQ bands")
+            effect.setDapParameter(DsParam.HEADPHONE_VIRTUALIZER, false, baseId)
+            effect.setDapParameter(DsParam.SPEAKER_VIRTUALIZER, false, baseId)
+            effect.setDapParameter(DsParam.VOLUME_LEVELER_ENABLE, false, baseId)
+            effect.setDapParameter(DsParam.DIALOGUE_ENHANCER_ENABLE, false, baseId)
+            effect.setDapParameter(DsParam.BASS_ENHANCER_ENABLE, false, baseId)
+            val flatGains = IntArray(20) { 0 }
+            effect.setDapParameter(DsParam.GEQ_BAND_GAINS, flatGains, baseId)
+        }
     }
 
     private fun restoreProfileOverridesToHal(
@@ -314,6 +340,10 @@ class DolbyController private constructor(private val context: Context) {
             } else {
                 checkEffectAndRun {
                     dolbyAudioEffect?.dsOn = false
+                    if (!disableAudioEffect) {
+                        gateAllSubEffectsOff()
+                        subEffectsGatedForBypass = true
+                    }
                 }
             }
         }

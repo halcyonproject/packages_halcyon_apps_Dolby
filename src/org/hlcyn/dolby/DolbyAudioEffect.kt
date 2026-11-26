@@ -16,7 +16,8 @@ import java.util.UUID
 class DolbyAudioEffect(
     priority: Int,
     audioSession: Int,
-    private val usePortStereoWidening: Boolean = false
+    private val usePortStereoWidening: Boolean = false,
+    private val disableAudioEffect: Boolean = false
 ) : AudioEffect(
     EFFECT_TYPE_NULL, findDapEffectUuid(), priority, audioSession
 ) {
@@ -61,7 +62,9 @@ class DolbyAudioEffect(
                     } catch (e: Exception) {
                         dlog(TAG, "EFFECT_PARAM_ENABLE=0 unsupported on this HAL: ${e.message}")
                     }
-                    setEnabled(false)
+                    if (disableAudioEffect) {
+                        setEnabled(false)
+                    }
                 }
             } catch (e: Exception) {
                 elog(TAG, "Error setting dsOn: ${e.message}", e)
